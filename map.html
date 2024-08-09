@@ -1,0 +1,74 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Map</title>
+    <script src="https://www.openlayers.org/api/OpenLayers.js"></script>
+    <style>
+        #map {
+            width: 100%;
+            height: 100vh;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <script>
+        var map = new OpenLayers.Map('map');
+        var wmsLayer = new OpenLayers.Layer.WMS(
+            "Bhuvan LULC 50K",
+            "https://bhuvan-vec2.nrsc.gov.in/bhuvan/wms",
+            { layers: 'lulc:BR_LULC50K_1112' }
+        );
+        map.addLayer(wmsLayer);
+        map.setCenter(
+            new OpenLayers.LonLat(78.9629, 20.5937), // Center of India
+            6
+        );
+    </script>
+</body>
+</html> -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Bhuvan Map</title>
+    <script src="https://www.openlayers.org/api/OpenLayers.js"></script>
+    <style>
+        #map {
+            width: 100%;
+            height: 100vh;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <script>
+        var map = new OpenLayers.Map('map');
+        var wms = new OpenLayers.Layer.WMS("Bhuvan LULC 50K",
+            "https://bhuvan-vec2.nrsc.gov.in/bhuvan/wms",
+            {layers: 'lulc:BR_LULC50K_1112'}
+        );
+        map.addLayer(wms);
+        
+        // Add a default center and zoom level
+        map.setCenter(new OpenLayers.LonLat(77.5946, 12.9716), 10);
+
+        // Function to update map with mobile location
+        function updateLocation(lat, lon) {
+            var locationLayer = new OpenLayers.Layer.Vector("Location");
+            var point = new OpenLayers.Geometry.Point(lon, lat).transform(
+                new OpenLayers.Projection("EPSG:4326"),
+                map.getProjectionObject()
+            );
+            var feature = new OpenLayers.Feature.Vector(point);
+            locationLayer.addFeatures([feature]);
+            map.addLayer(locationLayer);
+            map.setCenter(point, 15);
+        }
+
+        // Handle mobile location updates
+        window.updateLocation = updateLocation;
+    </script>
+</body>
+</html>
